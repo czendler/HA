@@ -1,35 +1,35 @@
 blueprint:
   name: ESPHome Multi-Click Button
-  description: Control actions based on single, double, triple clicks, and hold of an ESPHome button
+  description: Automate actions based on single, double, triple clicks, and hold events from an ESPHome button.
   domain: automation
   input:
     button_entity:
-      name: Button Entity
-      description: The ESPHome text sensor that reports button actions
+      name: Button Text Sensor
+      description: Select the ESPHome text sensor entity that reports button clicks.
       selector:
         entity:
           domain: text_sensor
     single_click_action:
       name: Single Click Action
-      description: Action to perform on single click
+      description: Action to run on single click.
       default: []
       selector:
         action: {}
     double_click_action:
       name: Double Click Action
-      description: Action to perform on double click
+      description: Action to run on double click.
       default: []
       selector:
         action: {}
     triple_click_action:
       name: Triple Click Action
-      description: Action to perform on triple click
+      description: Action to run on triple click.
       default: []
       selector:
         action: {}
     hold_action:
       name: Hold Action
-      description: Action to perform when button is held
+      description: Action to run when button is held.
       default: []
       selector:
         action: {}
@@ -37,36 +37,32 @@ blueprint:
 trigger:
   - platform: state
     entity_id: !input button_entity
-    to: "single"
-    id: single_click
-  - platform: state
-    entity_id: !input button_entity
-    to: "double"
-    id: double_click
-  - platform: state
-    entity_id: !input button_entity
-    to: "triple"
-    id: triple_click
-  - platform: state
-    entity_id: !input button_entity
-    to: "hold"
-    id: hold
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.to_state.state in ['single', 'double', 'triple', 'hold'] }}"
 
 action:
   - choose:
       - conditions:
-          - condition: trigger
-            id: single_click
+          - condition: template
+            value_template: "{{ trigger.to_state.state == 'single' }}"
         sequence: !input single_click_action
+
       - conditions:
-          - condition: trigger
-            id: double_click
+          - condition: template
+            value_template: "{{ trigger.to_state.state == 'double' }}"
         sequence: !input double_click_action
+
       - conditions:
-          - condition: trigger
-            id: triple_click
+          - condition: template
+            value_template: "{{ trigger.to_state.state == 'triple' }}"
         sequence: !input triple_click_action
+
       - conditions:
-          - condition: trigger
-            id: hold
+          - condition: template
+            value_template: "{{ trigger.to_state.state == 'hold' }}"
         sequence: !input hold_action
+
+mode: queued
+max_exceeded: silent

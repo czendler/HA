@@ -1,0 +1,496 @@
+blueprint:
+  name: ESPHome 8-Button Controller
+  description: Configure actions for an ESPHome device with 8 buttons, supporting single press, double press, and long press actions.
+  domain: automation
+  input:
+    controller_device:
+      name: ESPHome Device
+      description: The ESPHome device that contains the buttons
+      selector:
+        device:
+          integration: esphome
+          
+    # Button 1 Configuration
+    button_1_entity:
+      name: Button 1 Entity
+      description: The binary sensor entity representing Button 1
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_1_single_press_action:
+      name: Button 1 - Single Press Action
+      description: Action to perform when Button 1 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_1_double_press_action:
+      name: Button 1 - Double Press Action
+      description: Action to perform when Button 1 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_1_long_press_action:
+      name: Button 1 - Long Press Action
+      description: Action to perform when Button 1 is long pressed
+      default: []
+      selector:
+        action: {}
+
+    # Button 2 Configuration
+    button_2_entity:
+      name: Button 2 Entity
+      description: The binary sensor entity representing Button 2
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_2_single_press_action:
+      name: Button 2 - Single Press Action
+      description: Action to perform when Button 2 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_2_double_press_action:
+      name: Button 2 - Double Press Action
+      description: Action to perform when Button 2 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_2_long_press_action:
+      name: Button 2 - Long Press Action
+      description: Action to perform when Button 2 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 3 Configuration
+    button_3_entity:
+      name: Button 3 Entity
+      description: The binary sensor entity representing Button 3
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_3_single_press_action:
+      name: Button 3 - Single Press Action
+      description: Action to perform when Button 3 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_3_double_press_action:
+      name: Button 3 - Double Press Action
+      description: Action to perform when Button 3 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_3_long_press_action:
+      name: Button 3 - Long Press Action
+      description: Action to perform when Button 3 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 4 Configuration
+    button_4_entity:
+      name: Button 4 Entity
+      description: The binary sensor entity representing Button 4
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_4_single_press_action:
+      name: Button 4 - Single Press Action
+      description: Action to perform when Button 4 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_4_double_press_action:
+      name: Button 4 - Double Press Action
+      description: Action to perform when Button 4 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_4_long_press_action:
+      name: Button 4 - Long Press Action
+      description: Action to perform when Button 4 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 5 Configuration
+    button_5_entity:
+      name: Button 5 Entity
+      description: The binary sensor entity representing Button 5
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_5_single_press_action:
+      name: Button 5 - Single Press Action
+      description: Action to perform when Button 5 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_5_double_press_action:
+      name: Button 5 - Double Press Action
+      description: Action to perform when Button 5 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_5_long_press_action:
+      name: Button 5 - Long Press Action
+      description: Action to perform when Button 5 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 6 Configuration
+    button_6_entity:
+      name: Button 6 Entity
+      description: The binary sensor entity representing Button 6
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_6_single_press_action:
+      name: Button 6 - Single Press Action
+      description: Action to perform when Button 6 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_6_double_press_action:
+      name: Button 6 - Double Press Action
+      description: Action to perform when Button 6 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_6_long_press_action:
+      name: Button 6 - Long Press Action
+      description: Action to perform when Button 6 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 7 Configuration
+    button_7_entity:
+      name: Button 7 Entity
+      description: The binary sensor entity representing Button 7
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_7_single_press_action:
+      name: Button 7 - Single Press Action
+      description: Action to perform when Button 7 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_7_double_press_action:
+      name: Button 7 - Double Press Action
+      description: Action to perform when Button 7 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_7_long_press_action:
+      name: Button 7 - Long Press Action
+      description: Action to perform when Button 7 is long pressed
+      default: []
+      selector:
+        action: {}
+    
+    # Button 8 Configuration
+    button_8_entity:
+      name: Button 8 Entity
+      description: The binary sensor entity representing Button 8
+      selector:
+        entity:
+          domain: binary_sensor
+          device_id: !input controller_device
+    
+    button_8_single_press_action:
+      name: Button 8 - Single Press Action
+      description: Action to perform when Button 8 is pressed once
+      default: []
+      selector:
+        action: {}
+          
+    button_8_double_press_action:
+      name: Button 8 - Double Press Action
+      description: Action to perform when Button 8 is double pressed
+      default: []
+      selector:
+        action: {}
+          
+    button_8_long_press_action:
+      name: Button 8 - Long Press Action
+      description: Action to perform when Button 8 is long pressed
+      default: []
+      selector:
+        action: {}
+
+# Define the triggers for all button events
+trigger:
+  # Button 1 Triggers
+  - platform: state
+    entity_id: !input button_1_entity
+    to: "on"
+    id: button_1_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_1_entity
+    id: button_1_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_1_entity
+    id: button_1_long
+  
+  # Button 2 Triggers
+  - platform: state
+    entity_id: !input button_2_entity
+    to: "on"
+    id: button_2_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_2_entity
+    id: button_2_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_2_entity
+    id: button_2_long
+  
+  # Button 3 Triggers
+  - platform: state
+    entity_id: !input button_3_entity
+    to: "on"
+    id: button_3_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_3_entity
+    id: button_3_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_3_entity
+    id: button_3_long
+  
+  # Button 4 Triggers
+  - platform: state
+    entity_id: !input button_4_entity
+    to: "on"
+    id: button_4_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_4_entity
+    id: button_4_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_4_entity
+    id: button_4_long
+  
+  # Button 5 Triggers
+  - platform: state
+    entity_id: !input button_5_entity
+    to: "on"
+    id: button_5_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_5_entity
+    id: button_5_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_5_entity
+    id: button_5_long
+  
+  # Button 6 Triggers
+  - platform: state
+    entity_id: !input button_6_entity
+    to: "on"
+    id: button_6_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_6_entity
+    id: button_6_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_6_entity
+    id: button_6_long
+  
+  # Button 7 Triggers
+  - platform: state
+    entity_id: !input button_7_entity
+    to: "on"
+    id: button_7_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_7_entity
+    id: button_7_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_7_entity
+    id: button_7_long
+  
+  # Button 8 Triggers
+  - platform: state
+    entity_id: !input button_8_entity
+    to: "on"
+    id: button_8_single
+  - platform: event
+    event_type: esphome.button_double_press
+    event_data:
+      entity_id: !input button_8_entity
+    id: button_8_double
+  - platform: event
+    event_type: esphome.button_long_press
+    event_data:
+      entity_id: !input button_8_entity
+    id: button_8_long
+
+# Action logic based on which trigger fired
+action:
+  - choose:
+    # Button 1 Actions
+    - conditions:
+        - condition: trigger
+          id: button_1_single
+      sequence: !input button_1_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_1_double
+      sequence: !input button_1_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_1_long
+      sequence: !input button_1_long_press_action
+    
+    # Button 2 Actions
+    - conditions:
+        - condition: trigger
+          id: button_2_single
+      sequence: !input button_2_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_2_double
+      sequence: !input button_2_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_2_long
+      sequence: !input button_2_long_press_action
+    
+    # Button 3 Actions
+    - conditions:
+        - condition: trigger
+          id: button_3_single
+      sequence: !input button_3_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_3_double
+      sequence: !input button_3_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_3_long
+      sequence: !input button_3_long_press_action
+    
+    # Button 4 Actions
+    - conditions:
+        - condition: trigger
+          id: button_4_single
+      sequence: !input button_4_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_4_double
+      sequence: !input button_4_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_4_long
+      sequence: !input button_4_long_press_action
+    
+    # Button 5 Actions
+    - conditions:
+        - condition: trigger
+          id: button_5_single
+      sequence: !input button_5_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_5_double
+      sequence: !input button_5_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_5_long
+      sequence: !input button_5_long_press_action
+    
+    # Button 6 Actions
+    - conditions:
+        - condition: trigger
+          id: button_6_single
+      sequence: !input button_6_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_6_double
+      sequence: !input button_6_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_6_long
+      sequence: !input button_6_long_press_action
+    
+    # Button 7 Actions
+    - conditions:
+        - condition: trigger
+          id: button_7_single
+      sequence: !input button_7_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_7_double
+      sequence: !input button_7_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_7_long
+      sequence: !input button_7_long_press_action
+    
+    # Button 8 Actions
+    - conditions:
+        - condition: trigger
+          id: button_8_single
+      sequence: !input button_8_single_press_action
+    - conditions:
+        - condition: trigger
+          id: button_8_double
+      sequence: !input button_8_double_press_action
+    - conditions:
+        - condition: trigger
+          id: button_8_long
+      sequence: !input button_8_long_press_action

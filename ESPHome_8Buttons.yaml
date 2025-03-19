@@ -494,3 +494,5 @@ action:
         - condition: trigger
           id: button_8_long
       sequence: !input button_8_long_press_action
+
+mode: single

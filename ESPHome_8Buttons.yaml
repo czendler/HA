@@ -1,209 +1,72 @@
 blueprint:
-  name: ESPHome Single Button Control
-  description: Control multiple actions with a single ESPHome button using different press types
+  name: ESPHome Multi-Click Button
+  description: Control actions based on single, double, triple clicks, and hold of an ESPHome button
   domain: automation
   input:
     button_entity:
       name: Button Entity
-      description: The binary sensor entity representing your ESPHome button
+      description: The ESPHome text sensor that reports button actions
       selector:
         entity:
-          domain: binary_sensor
-    single_press_action:
-      name: Single Press Action
-      description: Action to run on a single press
+          domain: text_sensor
+    single_click_action:
+      name: Single Click Action
+      description: Action to perform on single click
       default: []
       selector:
         action: {}
-    double_press_action:
-      name: Double Press Action
-      description: Action to run on a double press
+    double_click_action:
+      name: Double Click Action
+      description: Action to perform on double click
       default: []
       selector:
         action: {}
-    triple_press_action:
-      name: Triple Press Action
-      description: Action to run on a triple press
+    triple_click_action:
+      name: Triple Click Action
+      description: Action to perform on triple click
       default: []
       selector:
         action: {}
-    long_press_action:
-      name: Long Press Action
-      description: Action to run on a long press
+    hold_action:
+      name: Hold Action
+      description: Action to perform when button is held
       default: []
       selector:
         action: {}
-    press_and_hold_action:
-      name: Press and Hold Action
-      description: Action to run when button is pressed and held
-      default: []
-      selector:
-        action: {}
-
-mode: restart
-max_exceeded: silent
 
 trigger:
   - platform: state
     entity_id: !input button_entity
-    to: "on"
-    id: button_press
+    to: "single"
+    id: single_click
+  - platform: state
+    entity_id: !input button_entity
+    to: "double"
+    id: double_click
+  - platform: state
+    entity_id: !input button_entity
+    to: "triple"
+    id: triple_click
+  - platform: state
+    entity_id: !input button_entity
+    to: "hold"
+    id: hold
 
 action:
   - choose:
-      # Single press detection
       - conditions:
-          - condition: template
-            value_template: >
-              {{ trigger.id == 'button_press' and
-                 not is_state(trigger.entity_id, 'on') }}
-        sequence:
-          - wait_for_trigger:
-              - platform: state
-                entity_id: !input button_entity
-                to: "on"
-                for:
-                  seconds: 0
-              - platform: state
-                entity_id: !input button_entity
-                to: "off"
-                for:
-                  seconds: 0.5
-            timeout:
-              seconds: 0.5
-            continue_on_timeout: false
-          - choose:
-              # Double press detected - wait to see if it's a triple
-              - conditions:
-                  - condition: template
-                    value_template: "{{ wait.trigger.to_state.state == 'on' }}"
-                sequence:
-                  - wait_for_trigger:
-                      - platform: state
-                        entity_id: !input button_entity
-                        to: "on"
-                        for:
-                          seconds: 0
-                      - platform: state
-                        entity_id: !input button_entity
-                        to: "off"
-                        for:
-                          seconds: 0.5
-                    timeout:
-                      seconds: 0.5
-                    continue_on_timeout: false
-                  - choose:
-                      # Triple press detected
-                      - conditions:
-                          - condition: template
-                            value_template: "{{ wait.trigger.to_state.state == 'on' }}"
-                        sequence:
-                          - wait_for_trigger:
-                              - platform: state
-                                entity_id: !input button_entity
-                                to: "off"
-                            timeout:
-                              seconds: 1
-                          - service: system_log.write
-                            data:
-                              message: "Triple Press detected"
-                              level: info
-                          - if:
-                              - condition: template
-                                value_template: "{{ triple_press_action|count > 0 }}"
-                            then: !input triple_press_action
-                      # Confirmed double press
-                      - conditions: []
-                        sequence:
-                          - service: system_log.write
-                            data:
-                              message: "Double Press detected"
-                              level: info
-                          - if:
-                              - condition: template
-                                value_template: "{{ double_press_action|count > 0 }}"
-                            then: !input double_press_action
-              # Confirmed single press
-              - conditions:
-                  - condition: template
-                    value_template: "{{ wait.trigger.to_state.state == 'off' }}"
-                sequence:
-                  - service: system_log.write
-                    data:
-                      message: "Single Press detected"
-                      level: info  
-                  - if:
-                      - condition: template
-                        value_template: "{{ single_press_action|count > 0 }}"
-                    then: !input single_press_action
-    
-      # Long press detection
+          - condition: trigger
+            id: single_click
+        sequence: !input single_click_action
       - conditions:
-          - condition: template
-            value_template: "{{ trigger.id == 'button_press' }}"
-        sequence:
-          - wait_for_trigger:
-              - platform: state
-                entity_id: !input button_entity
-                to: "off"
-                for:
-                  seconds: 0
-              - platform: state
-                entity_id: !input button_entity
-                to: "on"
-                for:
-                  seconds: 1
-            timeout:
-              seconds: 1
-            continue_on_timeout: false
-          - choose:
-              # Long press confirmed
-              - conditions:
-                  - condition: template
-                    value_template: "{{ wait.trigger.to_state.state == 'on' and wait.remaining == 0 }}"
-                sequence:
-                  - wait_for_trigger:
-                      - platform: state
-                        entity_id: !input button_entity
-                        to: "off"
-                      - platform: state
-                        entity_id: !input button_entity
-                        to: "on"
-                        for:
-                          seconds: 3
-                    timeout:
-                      seconds: 3
-                    continue_on_timeout: false
-                  - choose:
-                      # Press and hold detected
-                      - conditions:
-                          - condition: template
-                            value_template: "{{ wait.trigger.to_state.state == 'on' and wait.remaining == 0 }}"
-                        sequence:
-                          - service: system_log.write
-                            data:
-                              message: "Press and Hold detected"
-                              level: info
-                          - if:
-                              - condition: template
-                                value_template: "{{ press_and_hold_action|count > 0 }}"
-                            then: !input press_and_hold_action
-                          - wait_for_trigger:
-                              - platform: state
-                                entity_id: !input button_entity
-                                to: "off"
-                            timeout:
-                              seconds: 10
-                      # Long press completed
-                      - conditions:
-                          - condition: template
-                            value_template: "{{ wait.trigger.to_state.state == 'off' }}"
-                        sequence:
-                          - service: system_log.write
-                            data:
-                              message: "Long Press detected"
-                              level: info
-                          - if:
-                              - condition: template
-                                value_template: "{{ long_press_action|count > 0 }}"
-                            then: !input long_press_action
+          - condition: trigger
+            id: double_click
+        sequence: !input double_click_action
+      - conditions:
+          - condition: trigger
+            id: triple_click
+        sequence: !input triple_click_action
+      - conditions:
+          - condition: trigger
+            id: hold
+        sequence: !input hold_action

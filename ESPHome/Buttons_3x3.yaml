@@ -1,0 +1,122 @@
+
+matrix_keypad:
+  id: espdeck_keypad
+  rows:
+    - pin: $matrix_row_1
+    - pin: $matrix_row_2
+    - pin: $matrix_row_3
+  columns:
+    - pin: $matrix_col_1
+    - pin: $matrix_col_2
+    - pin: $matrix_col_3
+  keys: "123456789"
+  has_diodes: false
+  on_key:
+    - lambda: ESP_LOGI("KEY", "key %d pressed", x);
+
+# #             BUTTONS
+
+binary_sensor:
+  - id: !remove toggle
+  - platform: template
+    name: "Key 1 Hold"
+    id: key_1_Hold_state
+  - platform: template
+    name: "Key 1 Double Click"
+    id: key_1_double_click_state
+  - platform: template
+    name: "Key 1 Click"
+    id: key_1_click_state
+    
+  - platform: matrix_keypad
+    keypad_id: espdeck_keypad
+    id: key1
+    key: 1
+    on_multi_click:
+      - timing:
+        - ON for at most 950ms
+        - OFF for at least 500ms
+        then:
+          - lambda: !lambda |-
+              id(key_1_click_state).publish_state(true);
+          - delay: 500ms
+          - lambda: !lambda |-
+              id(key_1_click_state).publish_state(false);
+      - timing:
+        - ON for at least 1s
+        then:
+          - logger.log: "Key 1 MultiHold"
+          - lambda: !lambda |-
+              id(key_1_Hold_state).publish_state(true);
+          - delay: 1s
+          - lambda: !lambda |-
+              id(key_1_Hold_state).publish_state(false);
+    on_double_click:
+      min_length: 25ms
+      max_length: 350ms
+      then:
+        - logger.log: "Key 1 Double Click"
+        - lambda: !lambda |-
+              id(key_1_double_click_state).publish_state(true);
+        - delay: 1s
+        - lambda: !lambda |-
+              id(key_1_double_click_state).publish_state(false);
+
+  - platform: matrix_keypad
+    keypad_id: espdeck_keypad
+    id: toggle
+    key: 6
+    on_multi_click:
+      - timing:
+        - ON for at most 1s
+        - OFF for at most 0.25s
+        - ON for at most 1s
+        - OFF for at most 0.25s
+        - ON for at most 1s
+        then:
+         - script.execute: led_blink
+         - text_sensor.template.publish:
+             id: status
+             state: "clickTriple"
+         - script.execute:
+             id: action_event
+             action: "clickTriple"
+      - timing:
+         - ON for at most 1s
+         - OFF for at most 0.25s
+         - ON for at most 1s
+         - OFF for at least 0.25s
+        then:
+         - script.execute: led_blink
+         - text_sensor.template.publish:
+             id: status
+             state: "clickDouble"
+         - script.execute:
+             id: action_event
+             action: "clickDouble"
+      - timing:
+         - ON for 0.5s to 2s
+         - OFF for at least 50ms
+        then:
+         - script.execute: led_blink
+         - text_sensor.template.publish:
+             id: status
+             state: "clickLong"
+         - script.execute:
+             id: action_event
+             action: "clickLong"
+      - timing:
+         - ON for at most 0.5s
+         - OFF for at least 260ms
+        then:
+         - script.execute: led_blink
+         - text_sensor.template.publish:
+             id: status
+             state: "clickSingle"
+         - script.execute:
+             id: tagtuner_event
+             action: "clickSingle"
+             uid: ""
+             uri: ""
+             artist: ""
+             playlist: ""

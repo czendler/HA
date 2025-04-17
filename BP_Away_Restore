@@ -1,0 +1,43 @@
+blueprint:
+  name: Home Away + Restore devices
+  description: |
+    Ustawia tryb Away kiedy ostatnia osoba wychodzi, gasi urządzenia
+    i po powrocie przywraca ich poprzedni stan.
+  domain: automation
+  input:
+    persons:
+      name: Osoby
+      selector: {entity: {domain: person, multiple: true}}
+    entities_to_restore:
+      name: Encje do przywrócenia
+      selector: {entity: {multiple: true}}
+    away_actions:
+      name: Akcje przy wyjściu
+      default: []
+      selector: {action: {}}
+
+variables:
+  nobody_home: "{{ expand(!input persons)
+                   |selectattr('state','eq','home')
+                   |list | length == 0 }}"
+
+trigger:
+  - platform: state
+    entity_id: !input persons
+
+action:
+  - choose:
+      # ➡️ WYJŚCIE
+      - conditions: "{{ nobody_home }}"
+        sequence:
+          - service: scene.create
+            data:
+              scene_id: before_away
+              snapshot_entities: !input entities_to_restore
+          - repeat: !input away_actions
+      # ➡️ POWRÓT
+    default:
+      - service: scene.turn_on
+        target: {entity_id: scene.before_away}
+
+mode: restart
